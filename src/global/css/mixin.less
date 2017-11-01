@@ -1,0 +1,45 @@
+// 主色
+@main-color-blue: #55a8fd;
+@main-color-blue-hover: #5c9fe3;
+
+// 圆角
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+}
+
+// Text overflow
+// -------------------------
+// Requires inline-block or block for proper styling
+.text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.box-shadow(@shadow) {
+  //-moz-box-shadow: @shadow;
+  //-webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
+  box-shadow: @shadow;
+}
+
+// hack IE11 +
+.gteIE11Hack(@selector, @rules) {
+  _:-ms-fullscreen, :root .@{selector} {
+    @rules();
+  }
+}
+
+// hack edge
+.edgeHack(@selector, @rules) {
+  _:-ms-lang(x), .@{selector} {
+    @rules();
+  }
+}
+
+// hack ie11 + and edge
+.gteIE11AndEdgeHack(@selector, @rules) {
+  .gteIE11Hack(@selector, @rules);
+  .edgeHack(@selector, @rules);
+}
+
