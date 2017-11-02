@@ -45,7 +45,6 @@ function same(s) {
 }
 
 export default {
-
   get: function(name, options) {
     validateCookieName(name)
     if (typeof options === 'function') {

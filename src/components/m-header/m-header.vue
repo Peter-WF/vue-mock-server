@@ -134,7 +134,9 @@
       },
       setCache(key, value) {
         this.$utils.cookie.set(key, value || '', {
-          path: '/'
+          domain: document.domain.split('.').slice(-2).join('.'), // api.wangfeia.com => wangfeia.com && localhost => localhost
+          path: '/',
+          expires: 365 // 天
         })
       },
       querySearch(queryString, cb) {
