@@ -4,7 +4,7 @@
       <ul class="edit-panel-trigger">
         <el-tooltip
           effect="light"
-          content="自己编写的 mock 数据(/nodejs-team-www-web/mock/.local/**/${apiPath}_${method}.json)"
+          content="自己编写的 mock 数据(${appDir}/mock/.local/**/${apiPath}_${method}.json)"
           placement="bottom"
         >
           <li :class="active.localData ? 'active' : ''" @click="active.localData = !active.localData">
@@ -13,7 +13,7 @@
         </el-tooltip>
         <el-tooltip
           effect="light"
-          content="上次从 server 端拿到的数据(/nodejs-team-www-web/mock/.server/**/${apiPath}_${method}.json)"
+          content="上次从 server 端拿到的数据(/${appDir}/mock/.server/**/${apiPath}_${method}.json)"
           placement="bottom"
         >
           <li :class="active.serverData ? 'active' : ''" @click="active.serverData = !active.serverData">
@@ -22,7 +22,7 @@
         </el-tooltip>
         <el-tooltip
           effect="light"
-          content="合并 local 与 server 生成的数据(/nodejs-team-www-web/mock/.mock/**/${apiPath}_${method}.json)"
+          content="合并 local 与 server 生成的数据(/${appDir}/mock/.mock/**/${apiPath}_${method}.json)"
           placement="bottom"
         >
           <li :class="active.mockData ? 'active' : ''" @click="active.mockData = !active.mockData">
@@ -145,7 +145,7 @@
   }
 </script>
 <style rel="stylesheet/less" lang="less">
-  html, .w-body, .w-wrap {
+  html, body {
     height: 100%;
   }
 

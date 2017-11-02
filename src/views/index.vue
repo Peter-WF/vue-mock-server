@@ -16,7 +16,11 @@
   }
 </script>
 <style rel="stylesheet/less" lang="less">
-  .w-body {
+  html, body, .m-root {
+    height: 100%;
+  }
+
+  body {
     background: #f4f4f4;
   }
 

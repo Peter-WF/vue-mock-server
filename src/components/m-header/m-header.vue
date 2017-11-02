@@ -33,7 +33,7 @@
           @input="editMockData"
           @select="editMockData"
         >
-          <template slot="prepend">http://team.local.tp.com</template>
+          <template slot="prepend">{{ locationOrigin }}</template>
           <el-button slot="append" icon="el-icon-search"/>
         </el-autocomplete>
       </el-tooltip>
@@ -89,7 +89,8 @@
         restaurants: [],
         methodOptions: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS'],
         apiMockStorage: JSON.parse(this.getCache('mockConfig') || '{}'),
-        globalAgent: !!(this.getCache('globalAgent'))
+        globalAgent: !!(this.getCache('globalAgent')),
+        locationOrigin: location.origin
       }
     },
     computed: {
