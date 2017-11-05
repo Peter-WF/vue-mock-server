@@ -37,6 +37,7 @@
           v-model="localData"
           debounce='300'
           name='localData'
+          @beforeChange="beforeChange"
           :options='editorOption'
         />
       </div>
@@ -63,6 +64,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { codemirror } from 'vue-codemirror'
+  import vm from 'vm'
 
   require('codemirror/addon/fold/foldcode.js')
   require('codemirror/addon/fold/foldgutter.js')
@@ -128,7 +130,29 @@
         'updateMockDataAction',
         'updateAPIPathAction',
         'updateMethodAction'
-      ])
+      ]),
+      beforeChange(codeMirror, { origin, text, update }) {
+        // 如果是粘贴进来的字符串，会默认进行 json 格式化
+        if (origin === 'paste') {
+          update(null, null, this.formatJSONString(text.join('\n')).split(/\r\n?|\n/))
+        }
+      },
+      /**
+       * format JSONString by vm.runInThisContext
+       * @param text
+       * @returns {*}
+       */
+      formatJSONString(text) {
+        try {
+          return JSON.stringify(vm.runInThisContext(`(${text})`, {}, {
+            displayErrors: false,
+            timeout: 1000
+          }), null, '  ')
+        } catch (e) {
+          console.warn(e)
+          return text
+        }
+      }
     },
     filters: {},
     created() {
