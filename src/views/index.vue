@@ -29,7 +29,7 @@
     height: 100%;
     flex-direction: column;
     .m-wrap {
-      width: 1190px;
+      width: 85%;
       margin: auto;
     }
   }
