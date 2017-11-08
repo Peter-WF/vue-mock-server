@@ -64,6 +64,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { codemirror } from 'vue-codemirror'
+  import debounce from 'lodash/debounce'
   import vm from 'vm'
 
   require('codemirror/addon/fold/foldcode.js')
@@ -111,7 +112,7 @@
           return this.getLocalData
         },
         set(value) {
-          this.updateLocalDataAction(value)
+          this._saveLoadData(value)
         }
       },
       serverData() {
@@ -131,6 +132,19 @@
         'updateAPIPathAction',
         'updateMethodAction'
       ]),
+      _saveLoadData: debounce(function(value) {
+        this.updateLocalDataAction(value).then(() => {
+          this.$notify.success({
+            title: '成功',
+            message: '保存成功'
+          })
+        }).catch(e => {
+          this.$notify.error({
+            title: '错误',
+            message: e
+          })
+        })
+      }, 1000),
       beforeChange(codeMirror, { origin, text, update }) {
         // 如果是粘贴进来的字符串，会默认进行 json 格式化
         if (origin === 'paste') {

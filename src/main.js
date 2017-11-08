@@ -9,7 +9,18 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import { Input, Autocomplete, Tooltip, Select, Button, Option, Radio, RadioGroup, Switch } from 'element-ui'
+import {
+  Input,
+  Autocomplete,
+  Tooltip,
+  Select,
+  Button,
+  Option,
+  Radio,
+  RadioGroup,
+  Switch,
+  Notification
+} from 'element-ui'
 
 Vue.component(Tooltip.name, Tooltip)
 Vue.component(Input.name, Input)
@@ -20,6 +31,8 @@ Vue.component(Option.name, Option)
 Vue.component(Radio.name, Radio)
 Vue.component(RadioGroup.name, RadioGroup)
 Vue.component(Switch.name, Switch)
+
+Vue.prototype.$notify = Notification
 
 Vue.config.productionTip = false
 
