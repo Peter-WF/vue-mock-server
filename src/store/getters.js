@@ -8,8 +8,8 @@ export default {
   getMockData(state) {
     return state.mockData
   },
-  getAPIPath(state) {
-    return state.APIPath
+  getApiPath(state) {
+    return state.apiPath
   },
   getMethod(state) {
     return state.method

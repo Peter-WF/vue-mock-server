@@ -24,7 +24,7 @@ function getMockDataString(localDataString, serverDataString) {
 // 延迟执行写入本地
 const saveData = function(state, type, JSONString) {
   return Vue.prototype.$ajax({
-    url: `/mock-server/api/${state.method}/${type}${state.APIPath}`,
+    url: `/mock-server/api/${state.method}/${type}${state.apiPath}`,
     method: 'post',
     data: {
       JSONString: JSONString
@@ -38,25 +38,25 @@ const saveData = function(state, type, JSONString) {
 /**
  * 从本地文件中读取数据
  * @param method api method
- * @param APIPath api path
+ * @param apiPath api path
  * @param type  数据类型 local / server / mock
  */
-const getData = function(method, APIPath, type) {
+const getData = function(method, apiPath, type) {
   return Vue.prototype.$ajax({
-    url: `/mock-server/api/${method}/${type}${APIPath}`,
+    url: `/mock-server/api/${method}/${type}${apiPath}`,
     method: 'get'
   })
 }
 
 export default {
   initAPIDataAction: debounce(({ commit, state, dispatch }) => {
-    if (!state.APIPath) {
+    if (!state.apiPath) {
       // 如果当前没有填写 apiPatch 则不发起请求
       return Promise.resolve()
     } else {
       return Promise.all([
-        getData(state.method, state.APIPath, 'local'),
-        getData(state.method, state.APIPath, 'server')
+        getData(state.method, state.apiPath, 'local'),
+        getData(state.method, state.apiPath, 'server')
       ]).then(res => {
         commit('updateLocalData', JSON.stringify(res[0], null, '  '))
         commit('updateServerData', JSON.stringify(res[1], null, '  '))
@@ -103,8 +103,8 @@ export default {
       }
     })
   },
-  updateAPIPathAction({ commit, dispatch }, data) {
-    commit('updateAPIPath', data)
+  updateApiPathAction({ commit, dispatch }, data) {
+    commit('updateApiPath', data)
     return dispatch('initAPIDataAction')
   },
   updateMethodAction({ commit, dispatch }, data) {

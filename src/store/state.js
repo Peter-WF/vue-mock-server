@@ -1,5 +1,5 @@
 const defaultValue = {
-  'APIPath': '',
+  'apiPath': '',
   'method': 'GET',
   'localData': '{}',
   'serverData': '{}',

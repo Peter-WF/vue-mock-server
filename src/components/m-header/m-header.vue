@@ -26,7 +26,7 @@
         placement="bottom"
       >
         <el-autocomplete
-          v-model="APIPath"
+          v-model="apiPath"
           class="api-path"
           placeholder="搜索接口并编辑"
           :fetch-suggestions="querySearch"
@@ -96,15 +96,15 @@
     computed: {
       ...mapGetters([
         'getMethod',
-        'getAPIPath'
+        'getApiPath'
       ]),
-      APIPath: {
+      apiPath: {
         get() {
-          return this.getAPIPath
+          return this.getApiPath
         },
         set(value) {
           value = value.replace(/\/$/, '')
-          this.updateAPIPathAction(value)
+          this.updateApiPathAction(value)
         }
       },
       method: {
@@ -117,17 +117,31 @@
       },
       mockType: {
         get() {
-          return this.getMockType(this.APIPath, this.method)
+          return this.getMockType(this.apiPath, this.method)
         },
         set(value) {
-          this.setMockType(this.APIPath, this.method, value)
+          this.setMockType(this.apiPath, this.method, value)
+        }
+      }
+    },
+    watch: {
+      '$route'() {
+        const apiPath = '/' + this.$route.params.apiPath
+        const method = this.$route.params.method
+
+        if (apiPath !== this.apiPath) {
+          this.updateApiPathAction(apiPath)
+        }
+
+        if (method !== this.method) {
+          this.updateMethodAction(method)
         }
       }
     },
     methods: {
       ...mapActions([
         'updateMethodAction',
-        'updateAPIPathAction'
+        'updateApiPathAction'
       ]),
       getCache(key) {
         return this.$utils.cookie.get(key)
@@ -158,7 +172,7 @@
         }
       },
       editMockData() {
-        const key = this.APIPath.trim()
+        const key = this.apiPath.trim()
         if (key) {
           this.$router.push(`/edit/${this.method}${key}`)
         } else {
@@ -189,10 +203,7 @@
         }
       }
     },
-    created() {
-    },
     mounted() {
-      this.$bus.$emit('ready')
       this.$ajax({
         url: '/mock-server/api/getCacheFiles'
       }).then(res => {

@@ -122,14 +122,13 @@
         return this.getMockData
       }
     },
-    watch: {},
     methods: {
       ...mapActions([
         'initAPIDataAction',
         'updateLocalDataAction',
         'updateServerDataAction',
         'updateMockDataAction',
-        'updateAPIPathAction',
+        'updateApiPathAction',
         'updateMethodAction'
       ]),
       _saveLoadData: debounce(function(value) {
@@ -168,15 +167,10 @@
         }
       }
     },
-    filters: {},
-    created() {
-    },
     mounted() {
-      this.updateAPIPathAction(`/${this.$route.params[0]}`)
+      this.updateApiPathAction(`/${this.$route.params.apiPath}`)
       this.updateMethodAction(this.$route.params.method)
     },
-    updated() {},
-    destroyed() {},
     components: {
       codemirror
     }

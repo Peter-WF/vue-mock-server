@@ -8,8 +8,8 @@ export default {
   updateMockData(state, payload) {
     state.mockData = payload
   },
-  updateAPIPath(state, payload) {
-    state.APIPath = payload
+  updateApiPath(state, payload) {
+    state.apiPath = payload
   },
   updateMethod(state, payload) {
     state.method = payload

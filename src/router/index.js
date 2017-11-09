@@ -17,7 +17,7 @@ routerObj.addRoutes([
       {
         // 项目编辑页
         name: 'edit',
-        path: '/edit/:method/*',
+        path: '/edit/:method/:apiPath*',
         component: Edit
       }
       // {
