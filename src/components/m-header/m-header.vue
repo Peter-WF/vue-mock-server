@@ -210,11 +210,24 @@
       }
     },
     mounted() {
-      this.$ajax({
-        url: '/mock-server/api/getCacheFiles'
-      }).then(res => {
-        if (res.success) {
-          this.cacheFiles = res.data.files.map(item => {
+      Promise.all([
+        this.$ajax({
+          url: '/mock-server/api/cache/local/'
+        }),
+        this.$ajax({
+          url: '/mock-server/api/cache/server/'
+        })
+      ]).then(res => {
+        if (res[0].success && res[1].success) {
+          // 通过 Set 去重
+          const cacheFiles = new Set()
+          res[0].data.files.concat(
+            res[1].data.files
+          ).forEach(item => {
+            cacheFiles.add(item)
+          })
+          // 整理数组，供 el-autocomplete 使用
+          this.cacheFiles = Array.from(cacheFiles).map(item => {
             return {
               value: item
             }
