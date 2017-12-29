@@ -168,8 +168,12 @@
       }
     },
     mounted() {
-      this.updateApiPathAction(`/${this.$route.params.apiPath}`)
-      this.updateMethodAction(this.$route.params.method)
+      if (this.$route.params.apiPath != null) {
+        this.updateApiPathAction(`/${this.$route.params.apiPath}`)
+      }
+      if (this.$route.params.method != null) {
+        this.updateMethodAction()
+      }
     },
     components: {
       codemirror

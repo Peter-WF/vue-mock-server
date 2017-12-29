@@ -86,7 +86,7 @@
     name: 'm-header',
     data() {
       return {
-        restaurants: [],
+        cacheFiles: [],
         methodOptions: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS'],
         apiMockStorage: JSON.parse(this.getCache('mockConfig') || '{}'),
         globalAgent: !!(this.getCache('globalAgent')),
@@ -126,14 +126,15 @@
     },
     watch: {
       '$route'() {
-        const apiPath = '/' + this.$route.params.apiPath
-        const method = this.$route.params.method
-
-        if (apiPath !== this.apiPath) {
-          this.updateApiPathAction(apiPath)
+        if (this.$route.params.apiPath != null) {
+          const apiPath = '/' + this.$route.params.apiPath
+          if (apiPath !== this.apiPath) {
+            this.updateApiPathAction(apiPath)
+          }
         }
 
-        if (method !== this.method) {
+        const method = this.$route.params.method
+        if (method != null && method !== this.method) {
           this.updateMethodAction(method)
         }
       }
@@ -154,8 +155,8 @@
         })
       },
       querySearch(queryString, cb) {
-        const restaurants = this.restaurants
-        const results = queryString ? restaurants.filter(this.createFilter(queryString, this.method)) : restaurants
+        const cacheFiles = this.cacheFiles
+        const results = queryString ? cacheFiles.filter(this.createFilter(queryString, this.method)) : cacheFiles
         // 调用 callback 返回建议列表的数据
         cb(results.map(item => {
           return {
@@ -163,6 +164,7 @@
           }
         }))
       },
+      // 模糊查询以当前输入开头的，${method}.json 结尾的接口
       createFilter(queryString, method) {
         return (restaurant) => {
           const filePath = restaurant.value
@@ -172,8 +174,12 @@
         }
       },
       editMockData() {
-        const key = this.apiPath.trim()
+        let key = this.apiPath.trim()
+        // format path
         if (key) {
+          if (key[0] !== '/') {
+            key = '/' + key
+          }
           this.$router.push(`/edit/${this.method}${key}`)
         } else {
           this.$router.push(`/`)
@@ -208,7 +214,7 @@
         url: '/mock-server/api/getCacheFiles'
       }).then(res => {
         if (res.success) {
-          this.restaurants = res.data.files.map(item => {
+          this.cacheFiles = res.data.files.map(item => {
             return {
               value: item
             }
