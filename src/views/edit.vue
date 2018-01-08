@@ -132,11 +132,18 @@
         'updateMethodAction'
       ]),
       _saveLoadData: debounce(function(value) {
-        this.updateLocalDataAction(value).then(() => {
-          this.$notify.success({
-            title: '成功',
-            message: '保存成功'
-          })
+        this.updateLocalDataAction(value).then((rs) => {
+          if (rs.success) {
+            this.$notify.success({
+              title: '成功',
+              message: '保存成功'
+            })
+          } else {
+            this.$notify.error({
+              title: '错误',
+              message: rs.description
+            })
+          }
         }).catch(e => {
           this.$notify.error({
             title: '错误',
