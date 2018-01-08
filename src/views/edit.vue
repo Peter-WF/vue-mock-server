@@ -172,7 +172,7 @@
         this.updateApiPathAction(`/${this.$route.params.apiPath}`)
       }
       if (this.$route.params.method != null) {
-        this.updateMethodAction()
+        this.updateMethodAction(this.$route.params.method)
       }
     },
     components: {
