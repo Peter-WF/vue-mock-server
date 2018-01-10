@@ -29,10 +29,6 @@ const saveData = function(state, type, JSONString) {
     data: {
       JSONString: JSONString
     }
-  }).then(res => {
-    if (!res.success) {
-      // TODO 显示错误提示
-    }
   })
 }
 /**
@@ -78,11 +74,14 @@ export default {
           Promise.all([
             saveData(state, 'local', localDataString),
             dispatch('updateMockDataAction', mockData)
-          ]).then(() => {
-            resolve()
+          ]).then((rs) => {
+            resolve(rs[0])
           })
         } catch (e) {
-          reject(error2String(e))
+          reject({
+            success: false,
+            description: error2String(e)
+          })
         }
       }
     })
