@@ -34,17 +34,16 @@
     <div class="edit-panel">
       <div v-if="active.localData" class="edit-panel-item">
         <codemirror
-          v-model="localData"
-          debounce='300'
+          :value="localData"
           name='localData'
           @beforeChange="beforeChange"
+          @blur="_loadEditorBlur"
           :options='editorOption'
         />
       </div>
       <div v-if="active.serverData" class="edit-panel-item">
         <codemirror
           :value="serverData"
-          debounce='300'
           name='serverData'
           :options='Object.assign({}, editorOption, readOnlyEditor)'
         />
@@ -52,7 +51,6 @@
       <div v-if="active.mockData" class="edit-panel-item">
         <codemirror
           :value="mockData"
-          debounce='300'
           name='mockData'
           :options='Object.assign({}, editorOption, readOnlyEditor)'
         />
@@ -64,7 +62,6 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import { codemirror } from 'vue-codemirror'
-  import debounce from 'lodash/debounce'
   import vm from 'vm'
 
   require('codemirror/addon/fold/foldcode.js')
@@ -107,13 +104,8 @@
         'getServerData',
         'getMockData'
       ]),
-      localData: {
-        get() {
-          return this.getLocalData
-        },
-        set(value) {
-          this._saveLoadData(value)
-        }
+      localData() {
+        return this.getLocalData
       },
       serverData() {
         return this.getServerData
@@ -131,7 +123,10 @@
         'updateApiPathAction',
         'updateMethodAction'
       ]),
-      _saveLoadData: debounce(function(value) {
+      _loadEditorBlur(codeMirror) {
+        this._saveLoadData(this.formatJSONString(codeMirror.getValue()))
+      },
+      _saveLoadData(value) {
         this.updateLocalDataAction(value).then((rs) => {
           if (rs.success) {
             this.$notify.success({
@@ -150,7 +145,7 @@
             message: e
           })
         })
-      }, 1000),
+      },
       beforeChange(codeMirror, { origin, text, update }) {
         // 如果是粘贴进来的字符串，会默认进行 json 格式化
         if (origin === 'paste') {
